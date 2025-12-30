@@ -1,11 +1,14 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware  # <-- Ajouter CORS
+from fastapi.middleware.cors import CORSMiddleware
+
+from pathlib import Path
+from dotenv import load_dotenv
+
 from app.routers.user_router import router as user_router
 from app.routers.epds_router import router as epds_router
 from app.routers import assessment_router
 from app.routers.ml_router import router as ml_router
 from app.core.database import Base, engine
-from fastapi.middleware.cors import CORSMiddleware
 
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(dotenv_path=BASE_DIR / ".env")
