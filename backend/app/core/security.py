@@ -3,6 +3,8 @@ import json
 import os
 
 ENCRYPTION_KEY = os.getenv("ENCRYPTION_KEY")
+print("DEBUG ENCRYPTION_KEY:", ENCRYPTION_KEY)  # ← add this
+
 
 if not ENCRYPTION_KEY:
     raise ValueError("ENCRYPTION_KEY not found in .env file!")
