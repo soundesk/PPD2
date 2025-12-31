@@ -231,16 +231,21 @@ export function Quiz({ onComplete, onBack }: QuizProps) {
   };
 
   fetch(`${API_URL}/assessments/`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(payload),
+})
+  .then(async res => {
+    const data = await res.json();
+    if (!res.ok) {
+      console.error("422 DETAILS:", data);
+      return;
+    }
+    console.log("Success:", data);
+    onComplete(score, demographics);
   })
-    .then(res => res.json())
-    .then(data => {
-      console.log("Backend response:", data);
-      onComplete(score, demographics);
-    })
-    .catch(err => console.error("Error submitting quiz:", err));
+  .catch(err => console.error(err));
+
 }
   }
    }
