@@ -27,6 +27,8 @@ interface DemographicsData {
   recent_birth: boolean | null;
 }
 
+const API_URL = import.meta.env.VITE_API_URL; // <-- use .env variable
+
 const questions = [
   {
     id: 1,
@@ -218,20 +220,20 @@ export function Quiz({ onComplete, onBack }: QuizProps) {
       const score = Object.values(updatedAnswers).reduce((sum, val) => sum + val, 0);
 
       // Exemple d'envoi vers le backend
-      fetch('http://localhost:8000/submit_quiz', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ score, demographics, answers: updatedAnswers }),
-      })
-      .then(res => res.json())
-      .then(data => {
-        console.log('Réponse backend:', data);
-        onComplete(score, demographics); // Tu peux encore utiliser cette fonction pour l'affichage
-      })
-      .catch(err => console.error('Erreur en envoyant le quiz:', err));
+        fetch(`${API_URL}/assessments/`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ score, demographics, answers: updatedAnswers }),
+        })
+        .then(res => res.json())
+        .then(data => {
+          console.log('Backend response:', data);
+          onComplete(score, demographics);
+        })
+        .catch(err => console.error('Error submitting quiz:', err));
+      }
     }
-  }
-};
+  };
 
 
 
