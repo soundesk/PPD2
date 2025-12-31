@@ -517,7 +517,8 @@ export function Quiz({ onComplete, onBack }: QuizProps) {
                 </div>
 
                 <RadioGroup
-                  value={selectedAnswer?.toString()}
+  value={selectedAnswer === null ? "" : selectedAnswer.toString()}
+
                   onValueChange={(value) => handleAnswer(parseInt(value))}
                 >
                   <div className="space-y-4">
