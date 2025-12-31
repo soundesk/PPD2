@@ -1,5 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+import os
+print("DATABASE_URL seen by app:", os.getenv("DATABASE_URL"))
 
 # --------------------------------------------------
 # 1. CONFIGURATION DE LA CONNEXION A POSTGRESQL
