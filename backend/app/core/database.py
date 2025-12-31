@@ -1,13 +1,12 @@
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-import os
-print("DATABASE_URL seen by app:", os.getenv("DATABASE_URL"))
 
 # --------------------------------------------------
 # 1. CONFIGURATION DE LA CONNEXION A POSTGRESQL
 # --------------------------------------------------
 
-DATABASE_URL = "postgresql://postgres:douaa.16@localhost:5432/postpartum_bdd"
+DATABASE_URL = os.getenv("postgresql://postpartum_bdd_user:U85XfstEvPsJPk2ayLVBcdkBO0PQmTo0@dpg-d5afukpr0fns738as3eg-a.virginia-postgres.render.com/postpartum_bdd")  # <-- use env variable
 
 # create_engine → crée la connexion
 engine = create_engine(DATABASE_URL, echo=True)
