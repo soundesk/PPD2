@@ -217,23 +217,37 @@ export function Quiz({ onComplete, onBack }: QuizProps) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(updatedAnswers[currentQuestion + 1] ?? null);
     } else {
-      const score = Object.values(updatedAnswers).reduce((sum, val) => sum + val, 0);
 
-      // Exemple d'envoi vers le backend
-        fetch(`${API_URL}/assessments/`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ score, demographics, answers: updatedAnswers }),
+      // 🔹 Transform answers into backend format
+      const formattedAnswers = Object.entries(updatedAnswers).map(
+        ([questionIndex, value]) => ({
+          question_id: Number(questionIndex) + 1,
+          answer_value: value,
         })
-        .then(res => res.json())
-        .then(data => {
-          console.log('Backend response:', data);
-          onComplete(score, demographics);
+      );
+
+      fetch(`${API_URL}/assessments/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_id: 1, // 🔴 replace with real user id if you have auth
+          answers: formattedAnswers,
+        }),
+      })
+        .then(async (res) => {
+          const data = await res.json();
+          if (!res.ok) {
+            console.error("Backend error:", data);
+            return;
+          }
+          console.log("Backend response:", data);
+          onComplete(data.total_epds_score, demographics);
         })
-        .catch(err => console.error('Error submitting quiz:', err));
-      }
+        .catch((err) => console.error("Error submitting quiz:", err));
     }
-  };
+  }
+};
+
 
 
 
