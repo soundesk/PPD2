@@ -222,25 +222,28 @@ export function Quiz({ onComplete, onBack }: QuizProps) {
     0
   );
 
-  const payload = {
-    user_id: 1, // TEMP for now
-    answers: Object.entries(updatedAnswers).map(([index, value]) => ({
-      question_id: Number(index) + 1, // ✅ IMPORTANT
-      answer_value: value,
-    })),
-  };
-
-  fetch(`${API_URL}/assessments/`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+ const formattedAnswers = Object.entries(updatedAnswers).map(
+  ([questionIndex, answerValue]) => ({
+    question_id: Number(questionIndex) + 1,
+    answer_value: answerValue
   })
-    .then(res => res.json())
-    .then(data => {
-      console.log("Backend response:", data);
-      onComplete(score, demographics);
-    })
-    .catch(err => console.error("Error submitting quiz:", err));
+);
+
+fetch(`${API_URL}/assessments/`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    user_id: 1, // TEMP value, see below
+    answers: formattedAnswers
+  }),
+})
+  .then(res => res.json())
+  .then(data => {
+    console.log('Backend response:', data);
+    onComplete(score, demographics);
+  })
+  .catch(err => console.error(err));
+
 }
   }
    }
