@@ -7,6 +7,15 @@ import { Profile } from './components/Profile';
 import { HealthcareProvider } from './components/HealthcareProvider';
 import { SupportGroups } from './components/SupportGroups';
 
+interface BackendResult {
+  total_epds_score: number;
+  depression_level: 'low' | 'mild' | 'moderate' | 'higher_risk';
+  recommendation_title: string;
+  recommendation_message: string;
+  emergency_advice?: string;
+}
+
+
 interface DemographicsData {
   age: number;
   country: string;
@@ -24,7 +33,7 @@ export default function App() {
     'home' | 'profile' | 'quiz' | 'results' | 'healthcare' | 'support'
   >('home');
 
-  const [assessmentResult, setAssessmentResult] = useState<any | null>(null);
+  const [assessmentResult, setAssessmentResult] = useState<BackendResult | null>(null);
   const [demographics, setDemographics] = useState<DemographicsData | null>(null);
 
   const handleStartQuiz = () => {
@@ -34,7 +43,7 @@ export default function App() {
   };
 
   const handleQuizComplete = (
-    backendResult: any,
+    backendResult: BackendResult,
     demographicsData: DemographicsData
   ) => {
     setAssessmentResult(backendResult);
@@ -75,15 +84,16 @@ export default function App() {
         <Quiz onComplete={handleQuizComplete} onBack={handleReset} />
       )}
 
-      {currentPage === 'results' && assessmentResult && (
-        <Results
-         result={assessmentResult}
-         onReset={handleReset}
-         onNavigateToHealthcare={handleNavigateToHealthcare}
-         onNavigateToSupportGroups={handleNavigateToSupport}
-/>
+        {currentPage === 'results' &&
+          assessmentResult?.depression_level && (
+            <Results
+              result={assessmentResult}
+              onReset={handleReset}
+              onNavigateToHealthcare={handleNavigateToHealthcare}
+              onNavigateToSupportGroups={handleNavigateToSupport}
+            />
+        )}
 
-      )}
 
       {currentPage === 'healthcare' && (
         <HealthcareProvider onBack={handleBackToResults} />
