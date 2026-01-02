@@ -240,7 +240,8 @@ fetch(`${API_URL}/assessments/`, {
   .then(res => res.json())
   .then(data => {
     console.log('Backend response:', data);
-    onComplete(score, demographics);
+    onComplete(data, demographics);
+
   })
   .catch(err => console.error(err));
 
@@ -515,9 +516,10 @@ fetch(`${API_URL}/assessments/`, {
                 </div>
 
                 <RadioGroup
-                  value={selectedAnswer?.toString()}
-                  onValueChange={(value) => handleAnswer(parseInt(value))}
+                   value={selectedAnswer === null ? '' : selectedAnswer.toString()}
+                   onValueChange={(value) => handleAnswer(Number(value))}
                 >
+
                   <div className="space-y-4">
                     {currentQ?.options.map((option, index) => (
                       <motion.div
