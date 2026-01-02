@@ -20,30 +20,32 @@ interface DemographicsData {
 }
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'profile' | 'quiz' | 'results' | 'healthcare' | 'support'>('home');
-  const [quizScore, setQuizScore] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState<
+    'home' | 'profile' | 'quiz' | 'results' | 'healthcare' | 'support'
+  >('home');
+
+  const [assessmentResult, setAssessmentResult] = useState<any | null>(null);
   const [demographics, setDemographics] = useState<DemographicsData | null>(null);
 
   const handleStartQuiz = () => {
     setCurrentPage('quiz');
-    setQuizScore(null);
+    setAssessmentResult(null);
     setDemographics(null);
   };
 
-  const handleQuizComplete = (score: number, demographicsData: DemographicsData) => {
-    setQuizScore(score);
+  const handleQuizComplete = (
+    backendResult: any,
+    demographicsData: DemographicsData
+  ) => {
+    setAssessmentResult(backendResult);
     setDemographics(demographicsData);
     setCurrentPage('results');
   };
 
   const handleReset = () => {
     setCurrentPage('home');
-    setQuizScore(null);
+    setAssessmentResult(null);
     setDemographics(null);
-  };
-
-  const handleNavigate = (page: 'home' | 'profile') => {
-    setCurrentPage(page);
   };
 
   const handleNavigateToHealthcare = () => {
@@ -66,23 +68,21 @@ export default function App() {
           <InfoSection onStartQuiz={handleStartQuiz} />
         </>
       )}
-      
-      {currentPage === 'profile' && (
-        <Profile />
-      )}
-      
+
+      {currentPage === 'profile' && <Profile />}
+
       {currentPage === 'quiz' && (
         <Quiz onComplete={handleQuizComplete} onBack={handleReset} />
       )}
-      
-      {currentPage === 'results' && quizScore !== null && (
-        <Results 
-          score={quizScore} 
-          onReset={handleReset} 
-          demographics={demographics} 
-          onNavigateToHealthcare={handleNavigateToHealthcare}
-          onNavigateToSupportGroups={handleNavigateToSupport}
-        />
+
+      {currentPage === 'results' && assessmentResult && (
+        <Results
+         result={assessmentResult}
+         onReset={handleReset}
+         onNavigateToHealthcare={handleNavigateToHealthcare}
+         onNavigateToSupportGroups={handleNavigateToSupport}
+/>
+
       )}
 
       {currentPage === 'healthcare' && (
