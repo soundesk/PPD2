@@ -45,8 +45,13 @@ export function Results({
   onNavigateToSupportGroups,
 }: ResultsProps) {
   if (!result) return null; // 🔴 prevents blank / crash
+  if (!levelUI[result.depression_level]) {
+  console.error('Unknown depression level:', result.depression_level);
+  return null;
+}
 
-  const ui = levelUI[result.depression_level];
+
+const ui = levelUI[result.depression_level];
 
   const resources = [
     {
