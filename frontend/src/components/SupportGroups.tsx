@@ -19,7 +19,7 @@ export function SupportGroups({ onBack }: SupportGroupsProps) {
   });
   const [errors, setErrors] = useState({ email: false });
 
-  const telegramGroupLink = 'https://t.me/+YOUR_TELEGRAM_GROUP_LINK'; // TODO: Replace with actual Telegram group invite link
+  const telegramGroupLink = 'https://t.me/+BmC6yIbq80E5MTY0'; // TODO: Replace with actual Telegram group invite link
 
   const handleJoin = (e: React.FormEvent) => {
     e.preventDefault();
