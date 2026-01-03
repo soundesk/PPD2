@@ -7,14 +7,20 @@ import { Profile } from './components/Profile';
 import { HealthcareProvider } from './components/HealthcareProvider';
 import { SupportGroups } from './components/SupportGroups';
 
+type DepressionLevel =
+  | 'minimal'
+  | 'low'
+  | 'mild'
+  | 'moderate'
+  | 'higher_risk';
+
 interface BackendResult {
   total_epds_score: number;
-  depression_level: 'low' | 'mild' | 'moderate' | 'higher_risk';
+  depression_level: DepressionLevel;
   recommendation_title: string;
   recommendation_message: string;
   emergency_advice?: string;
 }
-
 
 interface DemographicsData {
   age: number;
