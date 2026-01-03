@@ -4,13 +4,21 @@ import { Button } from './ui/button';
 import { Alert, AlertDescription } from './ui/alert';
 import { Heart, Phone, Users, FileText, Home, Sparkles } from 'lucide-react';
 
+type DepressionLevel =
+  | 'minimal'
+  | 'low'
+  | 'mild'
+  | 'moderate'
+  | 'higher_risk';
+
 interface BackendResult {
   total_epds_score: number;
-  depression_level: 'low' | 'mild' | 'moderate' | 'higher_risk';
+  depression_level: DepressionLevel;
   recommendation_title: string;
   recommendation_message: string;
   emergency_advice?: string;
 }
+
 
 interface ResultsProps {
   result: BackendResult | null;
@@ -19,7 +27,11 @@ interface ResultsProps {
   onNavigateToSupportGroups: () => void;
 }
 
-const levelUI = {
+const levelUI: Record<DepressionLevel, { color: string; bgColor: string }> = {
+  minimal: {
+    color: 'from-green-300 to-green-400',
+    bgColor: 'from-green-50 to-green-100',
+  },
   low: {
     color: 'from-green-400 to-emerald-400',
     bgColor: 'from-green-50 to-emerald-50',
@@ -38,6 +50,7 @@ const levelUI = {
   },
 };
 
+
 export function Results({
   result,
   onReset,
@@ -45,10 +58,6 @@ export function Results({
   onNavigateToSupportGroups,
 }: ResultsProps) {
   if (!result) return null; // 🔴 prevents blank / crash
-  if (!levelUI[result.depression_level]) {
-  console.error('Unknown depression level:', result.depression_level);
-  return null;
-}
 
 
 const ui = levelUI[result.depression_level];
